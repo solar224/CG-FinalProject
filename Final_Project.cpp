@@ -367,11 +367,11 @@ void toggleBackgroundMusic() {
     btnToggleMusic.text = backgroundMusicEnabled ? "Music: ON" : "Music: OFF";
     if (backgroundMusicEnabled) {
         if (gameMode == MODE_MENU && !musicPlaying) {
-            playBackgroundMusic("Menu.mp3");
+            playBackgroundMusic("audio/Menu.mp3");
         } else if ((gameMode == MODE_SOLO || gameMode == MODE_PVP || gameMode == MODE_AI) && !musicPlaying) {
-            playBackgroundMusic("game.mp3");
+            playBackgroundMusic("audio/game.mp3");
         } else if (gameMode == MODE_RESULT && !musicPlaying) {
-            playBackgroundMusic("Result.mp3");
+            playBackgroundMusic("audio/Result.mp3");
         }
     } else {
         stopBackgroundMusic();
@@ -554,7 +554,7 @@ void updateEngineSound() {
 
     if (anyCarMoving) {
         if (!isWindPlaying) {
-            playLoopingSound("wind", "windNoise.mp3");
+            playLoopingSound("wind", "audio/windNoise.mp3");
             isWindPlaying = true;
         }
     } else {
@@ -4416,11 +4416,11 @@ void updateCB() {
 
     if (backgroundMusicEnabled && !musicPlaying) {  // If music is enabled and not currently playing
         if (gameMode == MODE_MENU) {
-            playBackgroundMusic("Menu.mp3");
+            playBackgroundMusic("audio/Menu.mp3");
         } else if (gameMode == MODE_SOLO || gameMode == MODE_PVP || gameMode == MODE_AI) {
-            playBackgroundMusic("game.mp3");  // Ensure game.mp3 is in the executable's directory
+            playBackgroundMusic("audio/game.mp3");  // Ensure game.mp3 is in the audio directory
         } else if (gameMode == MODE_RESULT) {
-            playBackgroundMusic("Result.mp3");  // Ensure Result.mp3 is in the executable's directory
+            playBackgroundMusic("audio/Result.mp3");  // Ensure Result.mp3 is in the audio directory
         }
         // Other modes like LOADING, TRACK_PREVIEW will not start music here by default
     } else if (!backgroundMusicEnabled && musicPlaying) {  // If music is disabled but was playing
@@ -4461,7 +4461,7 @@ void updateCB() {
             resetRace(false);  // Don't start timer immediately
             countdownActive = true;
             countdownLeft = 4.0f;
-            playSoundEffect("go.wav");
+            playSoundEffect("audio/go.wav");
             setImeMode(false);
             // Music for the new targetGameMode will be handled in the next updateCB
         }
@@ -4897,16 +4897,16 @@ void mouseCB(int button, int state, int x, int y) {
                     x <= btnReturnToMenuFromSettings.x + btnReturnToMenuFromSettings.w &&
                     invertedY >= btnReturnToMenuFromSettings.y &&
                     invertedY <= btnReturnToMenuFromSettings.y + btnReturnToMenuFromSettings.h) {
-                    playSoundEffect("clickButtons.wav");
+                    playSoundEffect("audio/clickButtons.wav");
                     fullResetToMenu();
                 } else if (x >= btnToggleMusic.x && x <= btnToggleMusic.x + btnToggleMusic.w &&
                            invertedY >= btnToggleMusic.y &&
                            invertedY <= btnToggleMusic.y + btnToggleMusic.h) {  // Check "Music: ON/OFF" button
-                    playSoundEffect("clickButtons.wav");
+                    playSoundEffect("audio/clickButtons.wav");
                     toggleBackgroundMusic();  // This will play/stop music based on current mode and new toggle state
                 } else if (x >= btnToggleSFX.x && x <= btnToggleSFX.x + btnToggleSFX.w && invertedY >= btnToggleSFX.y &&
                            invertedY <= btnToggleSFX.y + btnToggleSFX.h) {
-                    playSoundEffect("clickButtons.wav");
+                    playSoundEffect("audio/clickButtons.wav");
                     toggleSfx();
                 } else {
                     // Clicked inside settings panel but not on a button, or outside panel
@@ -4930,7 +4930,7 @@ void mouseCB(int button, int state, int x, int y) {
                 // Allow settings icon in most game modes
                 if (gameMode == MODE_MENU || gameMode == MODE_SOLO || gameMode == MODE_PVP || gameMode == MODE_AI ||
                     gameMode == MODE_RESULT) {
-                    playSoundEffect("clickButtons.wav");
+                    playSoundEffect("audio/clickButtons.wav");
                     isSettingsMenuOpen = !isSettingsMenuOpen;
                     glutPostRedisplay();
                     return;  // Settings icon click handled
@@ -4944,23 +4944,23 @@ void mouseCB(int button, int state, int x, int y) {
 
                 if (x >= btnSolo.x && x <= btnSolo.x + btnSolo.w && invertedY >= btnSolo.y &&
                     invertedY <= btnSolo.y + btnSolo.h) {
-                    playSoundEffect("clickButtons.wav");
+                    playSoundEffect("audio/clickButtons.wav");
                     newTargetMode = MODE_SOLO;
                     changingToLoading = true;
                 } else if (x >= btnPVP.x && x <= btnPVP.x + btnPVP.w && invertedY >= btnPVP.y &&
                            invertedY <= btnPVP.y + btnPVP.h) {
-                    playSoundEffect("clickButtons.wav");
+                    playSoundEffect("audio/clickButtons.wav");
                     newTargetMode = MODE_PVP;
                     changingToLoading = true;
                 } else if (x >= btnAI.x && x <= btnAI.x + btnAI.w && invertedY >= btnAI.y &&
                            invertedY <= btnAI.y + btnAI.h) {
-                    playSoundEffect("clickButtons.wav");
+                    playSoundEffect("audio/clickButtons.wav");
                     newTargetMode = MODE_AI;
                     changingToLoading = true;
                 } else if (x >= btnPreview.x && x <= btnPreview.x + btnPreview.w && invertedY >= btnPreview.y &&
                            invertedY <= btnPreview.y + btnPreview.h) {
                     // For track preview, music will be stopped by updateCB's logic
-                    playSoundEffect("clickButtons.wav");
+                    playSoundEffect("audio/clickButtons.wav");
                     gameMode = MODE_TRACK_PREVIEW;
                     // Setup preview camera
                     float trackCenterX = (mapMinX + mapMaxX) / 2.0f;
@@ -5416,9 +5416,9 @@ void initGL() {
     initializeTrafficCones();
     stbi_set_flip_vertically_on_load(1);  // 讓 stb 在載入時自動上下翻轉
     int w, h, n;
-    unsigned char* data = stbi_load("Speedcar.png", &w, &h, &n, 4);
+    unsigned char* data = stbi_load("images/Speedcar.png", &w, &h, &n, 4);
     if (!data) {
-        fprintf(stderr, "[ERR] cannot load Speedcar.png\n");
+        fprintf(stderr, "[ERR] cannot load images/Speedcar.png\n");
         exit(1);
     }
 
@@ -5430,9 +5430,9 @@ void initGL() {
     stbi_image_free(data);
 
     // 加載結算畫面背景
-    data = stbi_load("SettlementScreen.png", &w, &h, &n, 4);
+    data = stbi_load("images/SettlementScreen.png", &w, &h, &n, 4);
     if (!data) {
-        fprintf(stderr, "[ERR] cannot load SettlementScreen.png\n");
+        fprintf(stderr, "[ERR] cannot load images/SettlementScreen.png\n");
         // 錯誤處理：使用空紋理
         unsigned char empty[4] = {0, 0, 0, 255};
         glGenTextures(1, &texSettlement);
@@ -5448,9 +5448,9 @@ void initGL() {
     }
     // 加載柏油路紋理
     stbi_set_flip_vertically_on_load(1);  // 柏油路紋理通常不需要翻轉，先設為 false
-    data = stbi_load("blackRand.png", &w, &h, &n, 0);
+    data = stbi_load("images/blackRand.png", &w, &h, &n, 0);
     if (!data) {
-        fprintf(stderr, "[ERR] cannot load blackRand.png\n");
+        fprintf(stderr, "[ERR] cannot load images/blackRand.png\n");
     } else {
         glGenTextures(1, &texAsphalt);
         glBindTexture(GL_TEXTURE_2D, texAsphalt);
@@ -5473,15 +5473,15 @@ void initGL() {
 
     // 加載沙地紋理
     stbi_set_flip_vertically_on_load(0);          // 沙地紋理通常不需要垂直翻轉，如果貼上後顛倒再改為 1
-    data = stbi_load("sand.png", &w, &h, &n, 4);  // 強制以 RGBA (4通道) 格式載入
+    data = stbi_load("images/sand.png", &w, &h, &n, 4);  // 強制以 RGBA (4通道) 格式載入
 
     if (!data) {
-        fprintf(stderr, "[ERR] 無法載入 sand.png。請檢查檔案路徑和格式。\n");
+        fprintf(stderr, "[ERR] 無法載入 images/sand.png。請檢查檔案路徑和格式。\n");
     } else {
-        fprintf(stdout, "[INFO] 已載入 sand.png: %d x %d, 原始通道數: %d, 已載入為 4 通道。\n", w, h, n);
+        fprintf(stdout, "[INFO] 已載入 images/sand.png: %d x %d, 原始通道數: %d, 已載入為 4 通道。\n", w, h, n);
         if ((w > 0 && (w & (w - 1)) != 0) || (h > 0 && (h & (h - 1)) != 0)) {  // 檢查是否為2的次方
             fprintf(stderr,
-                    "[WARN] sand.png 的尺寸 (%d x %d) 不是2的次方。這可能會導致 gluBuild2DMipmaps 出現問題。\n"
+                    "[WARN] images/sand.png 的尺寸 (%d x %d) 不是2的次方。這可能會導致 gluBuild2DMipmaps 出現問題。\n"
                     "       建議將圖片尺寸修改為例如 256x256 或 512x512。\n",
                     w, h);
         }
@@ -5507,9 +5507,9 @@ void initGL() {
 
     // 加載草地紋理
     stbi_set_flip_vertically_on_load(0);  // 草地紋理通常不需要翻轉
-    data = stbi_load("Grass.png", &w, &h, &n, 0);
+    data = stbi_load("images/Grass.png", &w, &h, &n, 0);
     if (!data) {
-        fprintf(stderr, "[ERR] cannot load Grass.png\n");
+        fprintf(stderr, "[ERR] cannot load images/Grass.png\n");
     } else {
         glGenTextures(1, &texGrass);
         glBindTexture(GL_TEXTURE_2D, texGrass);
