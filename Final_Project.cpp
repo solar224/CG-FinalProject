@@ -4418,9 +4418,9 @@ void updateCB() {
         if (gameMode == MODE_MENU) {
             playBackgroundMusic("audio/Menu.mp3");
         } else if (gameMode == MODE_SOLO || gameMode == MODE_PVP || gameMode == MODE_AI) {
-            playBackgroundMusic("audio/game.mp3");  // Ensure game.mp3 is in the audio directory
+            playBackgroundMusic("audio/game.mp3");  // Ensure audio/game.mp3 is in the audio directory
         } else if (gameMode == MODE_RESULT) {
-            playBackgroundMusic("audio/Result.mp3");  // Ensure Result.mp3 is in the audio directory
+            playBackgroundMusic("audio/Result.mp3");  // Ensure audio/Result.mp3 is in the audio directory
         }
         // Other modes like LOADING, TRACK_PREVIEW will not start music here by default
     } else if (!backgroundMusicEnabled && musicPlaying) {  // If music is disabled but was playing
