@@ -100,7 +100,7 @@ UIButton btnPVP{50, winH / 2 + 20, 180, 60, "1 v 1"};
 UIButton btnAI{50, winH / 2 - 60, 180, 60, "1 v PC"};
 UIButton btnPreview{50, winH / 2 - 140, 180, 60, "Track Preview"};  // 新增賽道預覽按鈕
 // Leaderboard
-const char* SCORE_FILE = "scores.txt";
+const char* SCORE_FILE = "logs/scores.txt";
 vector<float> scores;  // 依成績秒數遞增排序
 const int TOP_N = 8;   // 只顯示前 8 名
 const int DUST_NUM = 80;
@@ -522,7 +522,7 @@ struct SoloReplayInfo {
     }
 };
 vector<SoloReplayInfo> topSoloReplays;
-const char* REPLAY_INFO_FILE = "solo_replays.txt";  // 儲存前三名記錄資訊的檔案
+const char* REPLAY_INFO_FILE = "logs/solo_replays.txt";  // 儲存前三名記錄資訊的檔案
 const int MAX_TOP_REPLAYS = 3;                      // 只保留前三名
 
 static const GLfloat PLANE[4] = {0.f, 1.f, 0.f, -0.02f};
@@ -599,7 +599,7 @@ void saveSoloOperationAndManageReplays(float newTime) {
     time_t now_time = time(nullptr);
     tm* ltm = localtime(&now_time);
     char buffer[80];
-    strftime(buffer, sizeof(buffer), "solo_input_log_%Y%m%d_%H%M%S.inputrec", ltm);
+    strftime(buffer, sizeof(buffer), "logs/solo_input_log_%Y%m%d_%H%M%S.inputrec", ltm);
     string newLogFilename(buffer);
     ofstream outFile(newLogFilename);
     if (!outFile) {
@@ -6091,6 +6091,9 @@ void cleanupNetwork() {
 //  Entry
 // ------------------------------------------------------------
 int main(int argc, char** argv) {
+    if (!CreateDirectoryA("logs", NULL) && GetLastError() != ERROR_ALREADY_EXISTS) {
+        cerr << "[ERROR] Failed to create logs directory." << endl;
+    }
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_MULTISAMPLE);
     glutInitWindowSize(winW, winH);

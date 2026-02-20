@@ -97,7 +97,8 @@ def log_to_csv(time, runtime, reason):
     minutes, seconds = divmod(remainder, 60)
     runtime_formatted = f"{int(hours):02d}:{int(minutes):02d}:{int(seconds):02d}"
 
-    logfile = 'logs.csv'
+    os.makedirs('logs', exist_ok=True)
+    logfile = 'logs/logs.csv'
     file_exists = os.path.isfile(logfile) and os.path.getsize(logfile) > 0
 
     with open(logfile, 'a', newline='', encoding='utf-8-sig') as csvfile:
